@@ -1,0 +1,8 @@
+.gitattributes export-ignore
+.gitignore export-ignore
+.gitreview export-ignore
+Doxyfile export-ignore
+composer.json export-ignore
+doc export-ignore
+phpunit.xml.dist export-ignore
+test export-ignore

@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<ruleset name="AhoCorasick">
+	<rule ref="vendor/mediawiki/mediawiki-codesniffer/MediaWiki"/>
+	<file>.</file>
+	<exclude-pattern>coverage</exclude-pattern>
+	<exclude-pattern>vendor</exclude-pattern>
+	<exclude-pattern>doc/html</exclude-pattern>
+</ruleset>
