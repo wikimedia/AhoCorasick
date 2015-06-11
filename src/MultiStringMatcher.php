@@ -47,10 +47,6 @@ namespace AhoCorasick;
  *  an aid to bibliographic search", CACM, 18(6):333-340, June 1975.
  *
  * @link http://xlinux.nist.gov/dads//HTML/ahoCorasick.html
- *
- * @param string $text The input string.
- * @param array $keywords An array of strings to search for.
- * @return array[] An array of (offset, substring) arrays.
  */
 class MultiStringMatcher {
 
@@ -66,8 +62,10 @@ class MultiStringMatcher {
 	/** @var array Mapping of states to outputs. **/
 	protected $outputs = array();
 
+	/** @var array Mapping of failure transitions. **/
 	protected $noTransitions = array();
 
+	/** @var array Mapping of success transitions. **/
 	protected $yesTransitions = array();
 
 
@@ -78,8 +76,8 @@ class MultiStringMatcher {
 	 */
 	public function __construct( array $searchKeywords ) {
 		foreach ( $searchKeywords as $keyword ) {
-			if ( $keyword !== '' && !in_array( $keyword, $this->searchKeywords ) ) {
-				$this->searchKeywords[] = $keyword;
+			if ( $keyword !== '' ) {
+				$this->searchKeywords[$keyword] = strlen( $keyword );
 			}
 		}
 
@@ -88,8 +86,8 @@ class MultiStringMatcher {
 			return;
 		}
 
-		$this->computeSuccessTransitions();
-		$this->computeFailTransitions();
+		$this->computeYesTransitions();
+		$this->computeNoTransitions();
 	}
 
 
@@ -99,7 +97,7 @@ class MultiStringMatcher {
 	 * @return string[] Search keywords.
 	 */
 	public function getKeywords() {
-		return $this->searchKeywords;
+		return array_keys( $this->searchKeywords );
 	}
 
 
@@ -113,14 +111,21 @@ class MultiStringMatcher {
 	 * @return int The state the automaton should transition to.
 	 */
 	public function nextState( $currentState, $inputChar ) {
-		while (
-			$currentState !== 0 &&
-			!isset( $this->yesTransitions[$currentState][$inputChar] )
-		) {
+		$initialState = $currentState;
+		while ( true ) {
+			if ( isset( $this->yesTransitions[$currentState][$inputChar] ) ) {
+				$nextState = $this->yesTransitions[$currentState][$inputChar];
+				// Avoid failure transitions next time.
+				if ( $currentState !== $initialState ) {
+					$this->yesTransitions[$initialState][$inputChar] = $nextState;
+				}
+				return $nextState;
+			}
+			if ( $currentState === 0 ) {
+				return 0;
+			}
 			$currentState = $this->noTransitions[$currentState];
 		}
-		return isset( $this->yesTransitions[$currentState][$inputChar] ) ?
-			$this->yesTransitions[$currentState][$inputChar] : 0;
 	}
 
 
@@ -145,14 +150,14 @@ class MultiStringMatcher {
 
 		$state = 0;
 		$results = array();
-		$length = mb_strlen( $text );
+		$length = strlen( $text );
 
 		for ( $i = 0; $i < $length; $i++ ) {
-			$ch = mb_substr( $text, $i, 1 );
+			$ch = $text[$i];
 			$state = $this->nextState( $state, $ch );
-			if ( !empty( $this->outputs[$state] ) ) {
+			if ( isset( $this->outputs[$state] ) ) {
 				foreach ( $this->outputs[$state] as $match ) {
-					$offset = $i - mb_strlen( $match ) + 1;
+					$offset = $i - $this->searchKeywords[$match] + 1;
 					$results[] = array( $offset, $match );
 				}
 			}
@@ -169,16 +174,13 @@ class MultiStringMatcher {
 	 * Constructs a directed tree with a root node which represents the
 	 * initial state of the string-matching automaton and from which a
 	 * path exists which spells out each search keyword.
-	 *
-	 * @return array[]
 	 */
-	protected function computeSuccessTransitions() {
-		foreach ( $this->searchKeywords as $keyword ) {
+	protected function computeYesTransitions() {
+		foreach ( $this->searchKeywords as $keyword => $length ) {
 			$state = 0;
-			$length = mb_strlen( $keyword );
 
 			for ( $i = 0; $i < $length; $i++ ) {
-				$ch = mb_substr( $keyword, $i, 1 );
+				$ch = $keyword[$i];
 				if ( !in_array( $ch, $this->searchChars ) ) {
 					$this->searchChars[] = $ch;
 				}
@@ -198,12 +200,8 @@ class MultiStringMatcher {
 	/**
 	 * Get the state transitions which the string-matching automaton
 	 * shall make when a partial match proves false.
-	 *
-	 * @param array[] $this->yesTransitions The array created by
-	 *  MultiStringMatcher::computeSuccessTransitions.
-	 * @return array[]
 	 */
-	protected function computeFailTransitions() {
+	protected function computeNoTransitions() {
 		$queue = array();
 		foreach ( $this->yesTransitions[0] as $ch => $toState ) {
 			if ( $toState !== 0 ) {
@@ -212,29 +210,28 @@ class MultiStringMatcher {
 			}
 		}
 
-		while ( ( $r = array_shift( $queue ) ) !== null ) {
-			if ( empty( $this->yesTransitions[$r] ) ) {
+		while ( $queue ) {
+			$fromState = array_shift( $queue );
+			if ( !isset( $this->yesTransitions[$fromState] ) ) {
 				continue;
 			}
-			foreach ( $this->yesTransitions[$r] as $ch => $toState ) {
+			foreach ( $this->yesTransitions[$fromState] as $ch => $toState ) {
 				$queue[] = $toState;
-				$state = $this->noTransitions[$r];
+				$state = $this->noTransitions[$fromState];
 
 				while ( $state !== 0 && empty( $this->yesTransitions[$state][$ch] ) ) {
 					$state = $this->noTransitions[$state];
 				}
 
-				$failState = isset( $this->yesTransitions[$state][$ch] ) ?
+				$noState = isset( $this->yesTransitions[$state][$ch] ) ?
 					$this->yesTransitions[$state][$ch] : 0;
-				$this->noTransitions[$toState] = $failState;
-				if ( isset( $this->outputs[$failState] ) ) {
+				$this->noTransitions[$toState] = $noState;
+				if ( isset( $this->outputs[$noState] ) ) {
 					$this->outputs[$toState] = empty( $this->outputs[$toState] )
-						? $this->outputs[$failState]
-						: array_merge( $this->outputs[$toState], $this->outputs[$failState] );
+						? $this->outputs[$noState]
+						: array_merge( $this->outputs[$toState], $this->outputs[$noState] );
 				}
 			}
 		}
-
-		return $this->noTransitions;
 	}
 }

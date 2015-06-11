@@ -79,10 +79,7 @@ class MultiStringReplacer extends MultiStringMatcher {
 		$matches = array();
 		foreach ( $this->searchIn( $text ) as $result ) {
 			list( $offset, $match ) = $result;
-			if ( !isset( $matches[$offset] ) ||
-				mb_strlen( $match ) > mb_strlen( $matches[$offset] ) ) {
-				$matches[$offset] = $match;
-			}
+			$matches[$offset] = $match;
 		}
 		ksort( $matches );
 
@@ -90,12 +87,11 @@ class MultiStringReplacer extends MultiStringMatcher {
 		$lastInsert = 0;
 		foreach ( $matches as $offset => $match ) {
 			if ( $offset >= $lastInsert ) {
-				$buf .= mb_substr( $text, $lastInsert, $offset - $lastInsert );
-				$buf .= $this->replacePairs[$match];
-				$lastInsert = $offset + mb_strlen( $match );
+				$buf .= substr( $text, $lastInsert, $offset - $lastInsert ) . $this->replacePairs[$match];
+				$lastInsert = $offset + $this->searchKeywords[$match];
 			}
 		}
-		$buf .= mb_substr( $text, $lastInsert );
+		$buf .= substr( $text, $lastInsert );
 
 		return $buf;
 	}

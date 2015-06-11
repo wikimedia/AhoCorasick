@@ -31,7 +31,6 @@
 namespace AhoCorasick\Test;
 
 use AhoCorasick\MultiStringMatcher;
-use AhoCorasick\DeterministicMultiStringMatcher;
 use AhoCorasick\MultiStringReplacer;
 
 /**
@@ -43,10 +42,9 @@ class NaiveMultiStringMatcher extends MultiStringMatcher {
 	/** @param string $text The text to search in. */
 	public function searchIn( $text ) {
 		$matches = array();
-		foreach ( $this->searchKeywords as $keyword ) {
-			$length = mb_strlen( $keyword );
+		foreach ( $this->searchKeywords as $keyword => $length ) {
 			$offset = 0;
-			while ( ( $offset = mb_strpos( $text, $keyword, $offset ) ) !== false ) {
+			while ( ( $offset = strpos( $text, $keyword, $offset ) ) !== false ) {
 				$matches[] = array( $offset, $keyword );
 				$offset = $offset + $length;
 			}
@@ -72,7 +70,7 @@ class AhoCorasickTest extends \PHPUnit_Framework_TestCase {
 		// then by search keyword.
 		usort( $matches, function ( $a, $b ) {
 			return ( $a[0] - $b[0] )
-				?: ( mb_strlen( $a[1] ) - mb_strlen( $b[1] ) )
+				?: ( strlen( $a[1] ) - strlen( $b[1] ) )
 				?: strcmp( $a[1], $b[1] );
 		} );
 	}
@@ -128,20 +126,6 @@ class AhoCorasickTest extends \PHPUnit_Framework_TestCase {
 	}
 
 
-	/** @dataProvider matcherCaseProvider */
-	public function testDeterministicMultiStringMatcher( $inputText, $searchKeywords ) {
-		$referenceMatcher = new NaiveMultiStringMatcher( $searchKeywords );
-		$referenceResults = $referenceMatcher->searchIn( $inputText );
-		$this->sortMatcherResults( $referenceResults );
-
-		$actualMatcher = new DeterministicMultiStringMatcher( $searchKeywords );
-		$actualResults = $actualMatcher->searchIn( $inputText );
-		$this->sortMatcherResults( $actualResults );
-
-		$this->assertEquals( $referenceResults, $actualResults );
-	}
-
-
 	public function replacerCaseProvider() {
 		return array(
 			array(
@@ -172,5 +156,4 @@ class AhoCorasickTest extends \PHPUnit_Framework_TestCase {
 		$expected = strtr( $inputText, $replacePairs );
 		$this->assertEquals( $expected, $actual );
 	}
-
 }
