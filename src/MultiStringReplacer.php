@@ -87,7 +87,8 @@ class MultiStringReplacer extends MultiStringMatcher {
 		$lastInsert = 0;
 		foreach ( $matches as $offset => $match ) {
 			if ( $offset >= $lastInsert ) {
-				$buf .= substr( $text, $lastInsert, $offset - $lastInsert ) . $this->replacePairs[$match];
+				$buf .= substr( $text, $lastInsert, $offset - $lastInsert );
+				$buf .= $this->replacePairs[$match];
 				$lastInsert = $offset + $this->searchKeywords[$match];
 			}
 		}
