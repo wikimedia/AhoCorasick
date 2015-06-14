@@ -53,9 +53,6 @@ class MultiStringMatcher {
 	/** @var string[] The set of keywords to be searched for. **/
 	protected $searchKeywords = array();
 
-	/** @var array The set of unique characters that appear in the search keywords. **/
-	protected $searchChars = array();
-
 	/** @var int The number of possible states of the string-matching finite state machine. **/
 	protected $numStates = 1;
 
@@ -113,8 +110,9 @@ class MultiStringMatcher {
 	public function nextState( $currentState, $inputChar ) {
 		$initialState = $currentState;
 		while ( true ) {
-			if ( isset( $this->yesTransitions[$currentState][$inputChar] ) ) {
-				$nextState = $this->yesTransitions[$currentState][$inputChar];
+			$transitions =& $this->yesTransitions[$currentState];
+			if ( isset( $transitions[$inputChar] ) ) {
+				$nextState = $transitions[$inputChar];
 				// Avoid failure transitions next time.
 				if ( $currentState !== $initialState ) {
 					$this->yesTransitions[$initialState][$inputChar] = $nextState;
@@ -155,11 +153,9 @@ class MultiStringMatcher {
 		for ( $i = 0; $i < $length; $i++ ) {
 			$ch = $text[$i];
 			$state = $this->nextState( $state, $ch );
-			if ( isset( $this->outputs[$state] ) ) {
-				foreach ( $this->outputs[$state] as $match ) {
-					$offset = $i - $this->searchKeywords[$match] + 1;
-					$results[] = array( $offset, $match );
-				}
+			foreach ( $this->outputs[$state] as $match ) {
+				$offset = $i - $this->searchKeywords[$match] + 1;
+				$results[] = array( $offset, $match );
 			}
 		}
 
@@ -176,18 +172,18 @@ class MultiStringMatcher {
 	 * path exists which spells out each search keyword.
 	 */
 	protected function computeYesTransitions() {
+		$this->yesTransitions = array( array() );
+		$this->outputs = array( array() );
 		foreach ( $this->searchKeywords as $keyword => $length ) {
 			$state = 0;
-
 			for ( $i = 0; $i < $length; $i++ ) {
 				$ch = $keyword[$i];
-				if ( !in_array( $ch, $this->searchChars ) ) {
-					$this->searchChars[] = $ch;
-				}
 				if ( !empty( $this->yesTransitions[$state][$ch] ) ) {
 					$state = $this->yesTransitions[$state][$ch];
 				} else {
 					$this->yesTransitions[$state][$ch] = $this->numStates;
+					$this->yesTransitions[] = array();
+					$this->outputs[] = array();
 					$state = $this->numStates++;
 				}
 			}
@@ -203,18 +199,14 @@ class MultiStringMatcher {
 	 */
 	protected function computeNoTransitions() {
 		$queue = array();
+		$this->noTransitions = array();
+
 		foreach ( $this->yesTransitions[0] as $ch => $toState ) {
-			if ( $toState !== 0 ) {
-				$queue[] = $toState;
-				$this->noTransitions[$toState] = 0;
-			}
+			$queue[] = $toState;
+			$this->noTransitions[$toState] = 0;
 		}
 
-		while ( $queue ) {
-			$fromState = array_shift( $queue );
-			if ( !isset( $this->yesTransitions[$fromState] ) ) {
-				continue;
-			}
+		while ( ( $fromState = array_shift( $queue ) ) !== null ) {
 			foreach ( $this->yesTransitions[$fromState] as $ch => $toState ) {
 				$queue[] = $toState;
 				$state = $this->noTransitions[$fromState];
@@ -223,14 +215,15 @@ class MultiStringMatcher {
 					$state = $this->noTransitions[$state];
 				}
 
-				$noState = isset( $this->yesTransitions[$state][$ch] ) ?
-					$this->yesTransitions[$state][$ch] : 0;
-				$this->noTransitions[$toState] = $noState;
-				if ( isset( $this->outputs[$noState] ) ) {
-					$this->outputs[$toState] = empty( $this->outputs[$toState] )
-						? $this->outputs[$noState]
-						: array_merge( $this->outputs[$toState], $this->outputs[$noState] );
+				if ( isset( $this->yesTransitions[$state][$ch] ) ) {
+					$noState = $this->yesTransitions[$state][$ch];
+				} else {
+					$noState = 0;
 				}
+
+				$this->noTransitions[$toState] = $noState;
+				$this->outputs[$toState] = array_merge(
+					$this->outputs[$toState], $this->outputs[$noState] );
 			}
 		}
 	}
