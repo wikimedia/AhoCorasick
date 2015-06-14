@@ -2,3 +2,5 @@
 /doc/html
 vendor/
 composer.lock
+bench/23835-0.txt
+bench/ZhConversion.php

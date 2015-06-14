@@ -6,11 +6,12 @@ use AhoCorasick\MultiStringReplacer;
 use AhoCorasick\MultiStringMatcher;
 
 if ( !file_exists( __DIR__ . '/23835-0.txt' ) ) {
-	die( 'Please download http://www.gutenberg.org/files/23835/23835-0.txt' );
+	die( "Please download http://www.gutenberg.org/files/23835/23835-0.txt\n" );
 }
 
 if ( !file_exists( __DIR__ . '/ZhConversion.php' ) ) {
-	die( 'You need ZhConversion.php, from http://git.io/vIMst' );
+	die( "You need ZhConversion.php, from " .
+		"https://github.com/wikimedia/mediawiki/blob/master/includes/ZhConversion.php\n" );
 }
 
 require_once __DIR__ . '/ZhConversion.php';

@@ -72,14 +72,16 @@ class MultiStringReplacer extends MultiStringMatcher {
 	 * @endcode
 	 */
 	public function searchAndReplace( $text ) {
-		if ( !$this->searchKeywords || $text === '' ) {
-			return $text;
-		}
-
+		$state = 0;
+		$length = strlen( $text );
 		$matches = array();
-		foreach ( $this->searchIn( $text ) as $result ) {
-			list( $offset, $match ) = $result;
-			$matches[$offset] = $match;
+		for ( $i = 0; $i < $length; $i++ ) {
+			$ch = $text[$i];
+			$state = $this->nextState( $state, $ch );
+			foreach ( $this->outputs[$state] as $match ) {
+				$offset = $i - $this->searchKeywords[$match] + 1;
+				$matches[$offset] = $match;
+			}
 		}
 		ksort( $matches );
 
