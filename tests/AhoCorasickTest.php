@@ -44,7 +44,11 @@ class NaiveMultiStringMatcher extends MultiStringMatcher {
 		$matches = array();
 		foreach ( $this->searchKeywords as $keyword => $length ) {
 			$offset = 0;
-			while ( ( $offset = strpos( $text, $keyword, $offset ) ) !== false ) {
+			while ( true ) {
+				$offset = strpos( $text, $keyword, $offset );
+				if ( $offset === false ) {
+					break;
+				}
 				$matches[] = array( $offset, $keyword );
 				$offset = $offset + $length;
 			}
@@ -63,7 +67,7 @@ class AhoCorasickTest extends \PHPUnit_Framework_TestCase {
 	 *
 	 * Helps us assert equivalence.
 	 *
-	 * @param &$matches Results array.
+	 * @param &$matches array Results array.
 	 */
 	public function sortMatcherResults( &$matches ) {
 		// Sort the results by match offset, then by match length,

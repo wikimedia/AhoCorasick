@@ -206,7 +206,11 @@ class MultiStringMatcher {
 			$this->noTransitions[$toState] = 0;
 		}
 
-		while ( ( $fromState = array_shift( $queue ) ) !== null ) {
+		while ( true ) {
+			$fromState = array_shift( $queue );
+			if ( $fromState === null ) {
+				break;
+			}
 			foreach ( $this->yesTransitions[$fromState] as $ch => $toState ) {
 				$queue[] = $toState;
 				$state = $this->noTransitions[$fromState];
