@@ -129,6 +129,21 @@ class AhoCorasickTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals( $referenceResults, $actualResults );
 	}
 
+	/**
+	 * @covers AhoCorasick\MultiStringMatcher::__construct
+	 * @expectedException PHPUnit_Framework_Error_Warning
+	 */
+	public function testConstructEmpty() {
+		$matcher = new MultiStringMatcher( [] );
+	}
+
+	/** @covers AhoCorasick\MultiStringMatcher::getKeywords */
+	public function testGetKeywords() {
+		$searchKeywords = [ 's', 'sea', 'の' ];
+		$matcher = new MultiStringMatcher( $searchKeywords );
+
+		$this->assertEquals( $searchKeywords, $matcher->getKeywords() );
+	}
 
 	public function replacerCaseProvider() {
 		return array(
@@ -153,7 +168,10 @@ class AhoCorasickTest extends \PHPUnit_Framework_TestCase {
 	}
 
 
-	/** @dataProvider replacerCaseProvider */
+	/**
+	 * @dataProvider replacerCaseProvider
+	 * @covers AhoCorasick\MultiStringReplacer
+	 */
 	public function testMultiStringReplacer( $inputText, $replacePairs ) {
 		$replacer = new MultiStringReplacer( $replacePairs );
 		$actual = $replacer->searchAndReplace( $inputText );
