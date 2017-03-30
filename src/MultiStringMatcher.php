@@ -80,7 +80,8 @@ class MultiStringMatcher {
 
 		if ( !$this->searchKeywords ) {
 			trigger_error( __METHOD__ . ': The set of search keywords is empty.', E_USER_WARNING );
-			return;
+			// Unreachable 'return' when PHPUnit detects trigger_error
+			return; // @codeCoverageIgnore
 		}
 
 		$this->computeYesTransitions();
@@ -124,7 +125,8 @@ class MultiStringMatcher {
 			}
 			$currentState = $this->noTransitions[$currentState];
 		}
-	}
+		// Unreachable outside 'while'
+	} // @codeCoverageIgnore
 
 
 	/**
