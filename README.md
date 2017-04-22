@@ -7,7 +7,7 @@ search keywords.
 
 Here is how you use it:
 
-```php
+<pre lang="php">
 use AhoCorasick\MultiStringMatcher;
 
 $keywords = new MultiStringMatcher( array( 'ore', 'hell' ) );
@@ -17,8 +17,7 @@ $keywords->searchIn( 'She sells sea shells by the sea shore.' );
 
 $keywords->searchIn( 'Say hello to more text. MultiStringMatcher objects are reusable!' );
 // Result: array( array( 4, 'hell' ), array( 14, 'ore' ) )
-
-```
+</pre>
 
 
 Features
@@ -49,7 +48,6 @@ License
 -------
 
 The project is licensed under the Apache license.
-
 
 
 [1]: https://en.wikipedia.org/wiki/Aho%E2%80%93Corasick_string_matching_algorithm
