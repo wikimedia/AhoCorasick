@@ -18,7 +18,7 @@ require_once __DIR__ . '/ZhConversion.php';
 
 $text = file_get_contents( __DIR__ . '/23835-0.txt' );
 
-$options = getopt( '', array( 'count:', 'input:', 'profile', 'fss', 'msr', 'strtr' ) );
+$options = getopt( '', [ 'count:', 'input:', 'profile', 'fss', 'msr', 'strtr' ] );
 $text = file_get_contents( isset( $options['input'] ) ? $options['input'] : 'SueiTangYanYi.txt' );
 $loops = isset( $options['count'] ) ? intval( $options['count'] ) : 5;
 if ( !isset( $options['fss'] ) && !isset( $options['msr'] ) && !isset( $options['strtr'] ) ) {

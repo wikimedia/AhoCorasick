@@ -34,30 +34,6 @@ use AhoCorasick\MultiStringMatcher;
 use AhoCorasick\MultiStringReplacer;
 
 /**
- * A multiple-substring search using a naive algorithm.
- * (Iterate through the entire body of input text for each search keyword.)
- */
-class NaiveMultiStringMatcher extends MultiStringMatcher {
-
-	/** @param string $text The text to search in. */
-	public function searchIn( $text ) {
-		$matches = array();
-		foreach ( $this->searchKeywords as $keyword => $length ) {
-			$offset = 0;
-			while ( true ) {
-				$offset = strpos( $text, $keyword, $offset );
-				if ( $offset === false ) {
-					break;
-				}
-				$matches[] = array( $offset, $keyword );
-				$offset = $offset + $length;
-			}
-		}
-		return $matches;
-	}
-}
-
-/**
  * @covers AhoCorasick\MultiStringMatcher
  */
 class AhoCorasickTest extends \PHPUnit_Framework_TestCase {
@@ -80,41 +56,40 @@ class AhoCorasickTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function matcherCaseProvider() {
-		$testCases = array(
-			array(
+		$testCases = [
+			[
 				'She sells sea shells by the sea shore.',
-				array( 's', 'se', 'sea', 'ore', 'hell', 'eat' )
-			),
-			array(
+				[ 's', 'se', 'sea', 'ore', 'hell', 'eat' ]
+			],
+			[
 				'She sells sea shells by the sea shore.',
-				array( 's', 'ls', 'lls', 'hells', 'shell', 'she', 'he', 'h' ),
-			),
-			array(
+				[ 's', 'ls', 'lls', 'hells', 'shell', 'she', 'he', 'h' ],
+			],
+			[
 				'井の中の蛙大海を知らず。',
-				array( 'の', '', '食', '小蓑' ),
-			),
-			array(
+				[ 'の', '', '食', '小蓑' ],
+			],
+			[
 				'Вдохновение — это умение приводить '
 					. 'себя в рабочее состояние.',
-				array( 'это умение приводить себя' ),
-			),
-			array(
+				[ 'это умение приводить себя' ],
+			],
+			[
 				"初しぐれ猿も小蓑をほしげ也\nはつしぐれさるもこみのをほしげなり",
-				array( "しげ也\nはつし" ),
-			),
-			array(
+				[ "しげ也\nはつし" ],
+			],
+			[
 				" (╯°□°）╯︵ ┻━┻  ",
-				array( '°□°' ),
-			),
-			array(
+				[ '°□°' ],
+			],
+			[
 				'',
-				array( 'a' ),
-			),
-		);
+				[ 'a' ],
+			],
+		];
 
 		return $testCases;
 	}
-
 
 	/** @dataProvider matcherCaseProvider */
 	public function testMultiStringMatcher( $inputText, $searchKeywords ) {
@@ -146,27 +121,26 @@ class AhoCorasickTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function replacerCaseProvider() {
-		return array(
-			array(
+		return [
+			[
 				'The quick brown fox jumps over the lazy dog.',
-				array( 'brown' => 'orange', 'brown fox' => 'blue cat', 'brown fox jx' => 'x' )
-			),
-			array(
+				[ 'brown' => 'orange', 'brown fox' => 'blue cat', 'brown fox jx' => 'x' ]
+			],
+			[
 				"It's raining snakes and ladders here",
-				array( "It's" => 'It is', 'snake' => 'cat', 'ladder' => 'dog', 'here' => 'out there' ),
-			),
-			array(
+				[ "It's" => 'It is', 'snake' => 'cat', 'ladder' => 'dog', 'here' => 'out there' ],
+			],
+			[
 				'Now is the time for all good men to come to the aid of the party',
-				array( 'USA' => 'United States' ),
-			),
-			array(
+				[ 'USA' => 'United States' ],
+			],
+			[
 				"富士の風や扇にのせて江戸土産\n" .
 					"ふじのかぜやおうぎにのせてえどみやげ",
-				array( '江戸' => '東京' ),
-			),
-		);
+				[ '江戸' => '東京' ],
+			],
+		];
 	}
-
 
 	/**
 	 * @dataProvider replacerCaseProvider

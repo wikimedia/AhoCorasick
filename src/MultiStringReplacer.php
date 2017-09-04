@@ -38,10 +38,8 @@ use AhoCorasick\MultiStringMatcher;
  */
 class MultiStringReplacer extends MultiStringMatcher {
 
-
 	/** @var array Mapping of states to outputs. **/
-	protected $replacePairs = array();
-
+	protected $replacePairs = [];
 
 	/**
 	 * Constructor.
@@ -56,7 +54,6 @@ class MultiStringReplacer extends MultiStringMatcher {
 		}
 		parent::__construct( array_keys( $this->replacePairs ) );
 	}
-
 
 	/**
 	 * Search and replace a set of keywords in some text.
@@ -74,7 +71,7 @@ class MultiStringReplacer extends MultiStringMatcher {
 	public function searchAndReplace( $text ) {
 		$state = 0;
 		$length = strlen( $text );
-		$matches = array();
+		$matches = [];
 		for ( $i = 0; $i < $length; $i++ ) {
 			$ch = $text[$i];
 			$state = $this->nextState( $state, $ch );

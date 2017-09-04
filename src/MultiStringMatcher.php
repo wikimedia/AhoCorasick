@@ -51,20 +51,19 @@ namespace AhoCorasick;
 class MultiStringMatcher {
 
 	/** @var string[] The set of keywords to be searched for. **/
-	protected $searchKeywords = array();
+	protected $searchKeywords = [];
 
 	/** @var int The number of possible states of the string-matching finite state machine. **/
 	protected $numStates = 1;
 
 	/** @var array Mapping of states to outputs. **/
-	protected $outputs = array();
+	protected $outputs = [];
 
 	/** @var array Mapping of failure transitions. **/
-	protected $noTransitions = array();
+	protected $noTransitions = [];
 
 	/** @var array Mapping of success transitions. **/
-	protected $yesTransitions = array();
-
+	protected $yesTransitions = [];
 
 	/**
 	 * Constructor.
@@ -88,7 +87,6 @@ class MultiStringMatcher {
 		$this->computeNoTransitions();
 	}
 
-
 	/**
 	 * Accessor for the search keywords.
 	 *
@@ -97,7 +95,6 @@ class MultiStringMatcher {
 	public function getKeywords() {
 		return array_keys( $this->searchKeywords );
 	}
-
 
 	/**
 	 * Map the current state and input character to the next state.
@@ -128,7 +125,6 @@ class MultiStringMatcher {
 		// Unreachable outside 'while'
 	} // @codeCoverageIgnore
 
-
 	/**
 	 * Locate the search keywords in some text.
 	 *
@@ -145,11 +141,11 @@ class MultiStringMatcher {
 	 */
 	public function searchIn( $text ) {
 		if ( !$this->searchKeywords || $text === '' ) {
-			return array();  // fast path
+			return [];  // fast path
 		}
 
 		$state = 0;
-		$results = array();
+		$results = [];
 		$length = strlen( $text );
 
 		for ( $i = 0; $i < $length; $i++ ) {
@@ -157,13 +153,12 @@ class MultiStringMatcher {
 			$state = $this->nextState( $state, $ch );
 			foreach ( $this->outputs[$state] as $match ) {
 				$offset = $i - $this->searchKeywords[$match] + 1;
-				$results[] = array( $offset, $match );
+				$results[] = [ $offset, $match ];
 			}
 		}
 
 		return $results;
 	}
-
 
 	/**
 	 * Get the state transitions which the string-matching automaton
@@ -174,8 +169,8 @@ class MultiStringMatcher {
 	 * path exists which spells out each search keyword.
 	 */
 	protected function computeYesTransitions() {
-		$this->yesTransitions = array( array() );
-		$this->outputs = array( array() );
+		$this->yesTransitions = [ [] ];
+		$this->outputs = [ [] ];
 		foreach ( $this->searchKeywords as $keyword => $length ) {
 			$state = 0;
 			for ( $i = 0; $i < $length; $i++ ) {
@@ -184,8 +179,8 @@ class MultiStringMatcher {
 					$state = $this->yesTransitions[$state][$ch];
 				} else {
 					$this->yesTransitions[$state][$ch] = $this->numStates;
-					$this->yesTransitions[] = array();
-					$this->outputs[] = array();
+					$this->yesTransitions[] = [];
+					$this->outputs[] = [];
 					$state = $this->numStates++;
 				}
 			}
@@ -194,14 +189,13 @@ class MultiStringMatcher {
 		}
 	}
 
-
 	/**
 	 * Get the state transitions which the string-matching automaton
 	 * shall make when a partial match proves false.
 	 */
 	protected function computeNoTransitions() {
-		$queue = array();
-		$this->noTransitions = array();
+		$queue = [];
+		$this->noTransitions = [];
 
 		foreach ( $this->yesTransitions[0] as $ch => $toState ) {
 			$queue[] = $toState;

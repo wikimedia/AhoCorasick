@@ -15,19 +15,27 @@
 		]
 	},
 	"require": {
-		"php": ">=5.3.3"
+		"php": ">=5.5.9"
+	},
+	"autoload-dev": {
+		"classmap": [
+			"tests/NaiveMultiStringMatcher.php"
+		]
 	},
 	"require-dev": {
 		"jakub-onderka/php-parallel-lint": "0.9",
 		"phpunit/phpunit": "^4.8",
-		"mediawiki/mediawiki-codesniffer": "0.5.0"
+		"mediawiki/mediawiki-codesniffer": "0.12.0"
 	},
 	"scripts": {
 		"test": [
 			"parallel-lint . --exclude vendor",
 			"phpunit $PHPUNIT_ARGS",
-			"phpcs -p"
+			"phpcs -sp"
 		],
-		"cover": "phpunit --coverage-html coverage/"
+		"cover": "phpunit --coverage-html coverage/",
+		"fix": [
+			"phpcbf"
+		]
 	}
 }
