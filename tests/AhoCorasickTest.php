@@ -34,7 +34,7 @@ use AhoCorasick\MultiStringMatcher;
 use AhoCorasick\MultiStringReplacer;
 
 /**
- * @covers AhoCorasick\MultiStringMatcher
+ * @covers \AhoCorasick\MultiStringMatcher
  */
 class AhoCorasickTest extends \PHPUnit_Framework_TestCase {
 
@@ -105,14 +105,14 @@ class AhoCorasickTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	/**
-	 * @covers AhoCorasick\MultiStringMatcher::__construct
-	 * @expectedException PHPUnit_Framework_Error_Warning
+	 * @covers \AhoCorasick\MultiStringMatcher::__construct
+	 * @expectedException \PHPUnit_Framework_Error_Warning
 	 */
 	public function testConstructEmpty() {
 		$matcher = new MultiStringMatcher( [] );
 	}
 
-	/** @covers AhoCorasick\MultiStringMatcher::getKeywords */
+	/** @covers \AhoCorasick\MultiStringMatcher::getKeywords */
 	public function testGetKeywords() {
 		$searchKeywords = [ 's', 'sea', 'の' ];
 		$matcher = new MultiStringMatcher( $searchKeywords );
@@ -144,7 +144,7 @@ class AhoCorasickTest extends \PHPUnit_Framework_TestCase {
 
 	/**
 	 * @dataProvider replacerCaseProvider
-	 * @covers AhoCorasick\MultiStringReplacer
+	 * @covers \AhoCorasick\MultiStringReplacer
 	 */
 	public function testMultiStringReplacer( $inputText, $replacePairs ) {
 		$replacer = new MultiStringReplacer( $replacePairs );
