@@ -30,10 +30,9 @@
 	"scripts": {
 		"test": [
 			"parallel-lint . --exclude vendor",
-			"phpunit $PHPUNIT_ARGS",
+			"phpunit --coverage-html coverage",
 			"phpcs -sp"
 		],
-		"cover": "phpunit --coverage-html coverage/",
 		"fix": [
 			"phpcbf"
 		]
