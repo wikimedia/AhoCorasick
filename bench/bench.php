@@ -3,7 +3,6 @@ require_once __DIR__ . '/../src/MultiStringMatcher.php';
 require_once __DIR__ . '/../src/MultiStringReplacer.php';
 
 use AhoCorasick\MultiStringReplacer;
-use AhoCorasick\MultiStringMatcher;
 
 if ( !file_exists( __DIR__ . '/23835-0.txt' ) ) {
 	die( "Please download http://www.gutenberg.org/files/23835/23835-0.txt\n" );

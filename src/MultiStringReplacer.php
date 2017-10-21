@@ -30,8 +30,6 @@
 
 namespace AhoCorasick;
 
-use AhoCorasick\MultiStringMatcher;
-
 /**
  * This class extends MultiStringMatcher, adding search and replace
  * functionality.
