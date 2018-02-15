@@ -36,7 +36,7 @@ use AhoCorasick\MultiStringReplacer;
 /**
  * @covers \AhoCorasick\MultiStringMatcher
  */
-class AhoCorasickTest extends \PHPUnit_Framework_TestCase {
+class AhoCorasickTest extends \PHPUnit\Framework\TestCase {
 
 	/**
 	 * Sort results of NaiveMultiStringMatcher or MultiStringMatcher.
