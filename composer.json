@@ -3,7 +3,7 @@
 	"description": "An implementation of the Aho-Corasick string matching algorithm.",
 	"keywords": ["ahocorasick", "matcher"],
 	"license": "Apache-2.0",
-	"homepage": "https://www.mediawiki.org/wiki/AhoCorasick",
+	"homepage": "https://gerrit.wikimedia.org/g/AhoCorasick",
 	"authors": [
 		{
 			"name": "Ori Livneh",

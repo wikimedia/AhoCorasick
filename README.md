@@ -1,3 +1,5 @@
+[![Packagist.org](https://img.shields.io/packagist/v/wikimedia/aho-corasick.svg?style=flat)](https://packagist.org/packages/wikimedia/aho-corasick)
+
 AhoCorasick
 ===========
 
@@ -34,8 +36,8 @@ input character.
 Contribute
 ----------
 
-- Issue Tracker: https://phabricator.wikimedia.org/project/view/1295/
-- Source Code: https://github.com/wikimedia/AhoCorasick
+- Issue tracker: <https://phabricator.wikimedia.org/tag/ahocorasick/>
+- Source code: https://github.com/wikimedia/AhoCorasick
 
 
 Support
