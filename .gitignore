@@ -1,6 +1,7 @@
 /coverage
-/doc/html
-vendor/
-composer.lock
+/doc
+/vendor
+/composer.lock
+/.idea
 bench/23835-0.txt
 bench/ZhConversion.php

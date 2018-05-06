@@ -1,7 +1,6 @@
 <phpunit colors="true"
 	beStrictAboutTestsThatDoNotTestAnything="true"
-	beStrictAboutOutputDuringTests="true"
-	convertErrorsToExceptions="true">
+	beStrictAboutOutputDuringTests="true">
 	<testsuites>
 		<testsuite name="AhoCorasick Tests">
 			<directory>./tests</directory>

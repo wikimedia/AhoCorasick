@@ -26,20 +26,23 @@
 	"require-dev": {
 		"jakub-onderka/php-parallel-lint": "1.0.0",
 		"jakub-onderka/php-console-highlighter": "0.3.2",
-		"phpunit/phpunit": "4.8.36 || ^6.5",
 		"mediawiki/mediawiki-codesniffer": "18.0.0",
-		"mediawiki/minus-x": "0.3.1"
+		"mediawiki/minus-x": "0.3.1",
+		"ockcyp/covers-validator": "0.5.1 || 0.6.1",
+		"phpunit/phpunit": "4.8.36 || ^6.5"
 	},
 	"scripts": {
 		"test": [
 			"parallel-lint . --exclude vendor",
-			"phpunit --coverage-html coverage",
+			"phpunit",
+			"covers-validator",
 			"phpcs -sp",
 			"minus-x check ."
 		],
+		"cover": "phpunit --coverage-html coverage",
 		"fix": [
-			"phpcbf",
-			"minus-x fix ."
+			"minus-x fix .",
+			"phpcbf"
 		]
 	}
 }
