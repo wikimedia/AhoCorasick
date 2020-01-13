@@ -50,19 +50,19 @@ namespace AhoCorasick;
  */
 class MultiStringMatcher {
 
-	/** @var string[] The set of keywords to be searched for. **/
+	/** @var string[] The set of keywords to be searched for. */
 	protected $searchKeywords = [];
 
-	/** @var int The number of possible states of the string-matching finite state machine. **/
+	/** @var int The number of possible states of the string-matching finite state machine. */
 	protected $numStates = 1;
 
-	/** @var array Mapping of states to outputs. **/
+	/** @var array Mapping of states to outputs. */
 	protected $outputs = [];
 
-	/** @var array Mapping of failure transitions. **/
+	/** @var array Mapping of failure transitions. */
 	protected $noTransitions = [];
 
-	/** @var array Mapping of success transitions. **/
+	/** @var array Mapping of success transitions. */
 	protected $yesTransitions = [];
 
 	/**

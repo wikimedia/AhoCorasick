@@ -36,7 +36,7 @@ namespace AhoCorasick;
  */
 class MultiStringReplacer extends MultiStringMatcher {
 
-	/** @var array Mapping of states to outputs. **/
+	/** @var array Mapping of states to outputs. */
 	protected $replacePairs = [];
 
 	/**
