@@ -19,7 +19,7 @@
 		]
 	},
 	"require": {
-		"php": ">=5.6.99"
+		"php": ">=7.2.9"
 	},
 	"autoload-dev": {
 		"classmap": [
