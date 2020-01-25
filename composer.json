@@ -31,8 +31,8 @@
 		"jakub-onderka/php-console-highlighter": "0.3.2",
 		"mediawiki/mediawiki-codesniffer": "29.0.0",
 		"mediawiki/minus-x": "0.3.2",
-		"ockcyp/covers-validator": "0.5.1 || 0.6.1",
-		"phpunit/phpunit": "4.8.36 || ^6.5"
+		"ockcyp/covers-validator": "^1.1.0",
+		"phpunit/phpunit": "^8.5"
 	},
 	"scripts": {
 		"test": [
