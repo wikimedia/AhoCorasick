@@ -5,3 +5,4 @@
 /.idea
 bench/23835-0.txt
 bench/ZhConversion.php
+/.phpunit.result.cache
