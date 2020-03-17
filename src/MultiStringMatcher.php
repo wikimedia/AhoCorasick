@@ -173,6 +173,7 @@ class MultiStringMatcher {
 		$this->outputs = [ [] ];
 		foreach ( $this->searchKeywords as $keyword => $length ) {
 			$state = 0;
+			$keyword = (string)$keyword;
 			for ( $i = 0; $i < $length; $i++ ) {
 				$ch = $keyword[$i];
 				if ( !empty( $this->yesTransitions[$state][$ch] ) ) {
