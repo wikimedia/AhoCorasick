@@ -29,7 +29,7 @@
 	"require-dev": {
 		"mediawiki/mediawiki-codesniffer": "33.0.0",
 		"mediawiki/minus-x": "1.1.0",
-		"ockcyp/covers-validator": "1.2.0",
+		"ockcyp/covers-validator": "1.3.0",
 		"php-parallel-lint/php-console-highlighter": "0.5.0",
 		"php-parallel-lint/php-parallel-lint": "1.2.0",
 		"phpunit/phpunit": "^8.5"
