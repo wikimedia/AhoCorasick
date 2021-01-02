@@ -108,13 +108,7 @@ class AhoCorasickTest extends \PHPUnit\Framework\TestCase {
 	 * @covers \AhoCorasick\MultiStringMatcher::__construct
 	 */
 	public function testConstructEmpty() {
-		if ( class_exists( \PHPUnit_Framework_Error_Warning::class ) ) {
-			// PHPUnit 4.8
-			$this->setExpectedException( \PHPUnit_Framework_Error_Warning::class );
-		} else {
-			// PHPUnit 6+
-			$this->expectException( \PHPUnit\Framework\Error\Warning::class );
-		}
+		$this->expectWarning();
 		$matcher = new MultiStringMatcher( [] );
 	}
 
