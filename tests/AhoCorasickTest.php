@@ -48,7 +48,7 @@ class AhoCorasickTest extends \PHPUnit\Framework\TestCase {
 	public function sortMatcherResults( &$matches ) {
 		// Sort the results by match offset, then by match length,
 		// then by search keyword.
-		usort( $matches, function ( $a, $b ) {
+		usort( $matches, static function ( $a, $b ) {
 			return ( $a[0] - $b[0] )
 				?: ( strlen( $a[1] ) - strlen( $b[1] ) )
 				?: strcmp( $a[1], $b[1] );
