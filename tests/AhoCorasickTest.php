@@ -86,8 +86,11 @@ class AhoCorasickTest extends \PHPUnit\Framework\TestCase {
 				'',
 				[ 'a' ],
 			],
+			[
+				'xxxyyy999',
+				[ '999' ]
+			],
 		];
-
 		return $testCases;
 	}
 
