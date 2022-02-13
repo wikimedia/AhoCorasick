@@ -46,6 +46,7 @@ class NaiveMultiStringMatcher extends MultiStringMatcher {
 		$matches = [];
 		foreach ( $this->searchKeywords as $keyword => $length ) {
 			$offset = 0;
+            $keyword = strval( $keyword );
 			while ( true ) {
 				$offset = strpos( $text, $keyword, $offset );
 				if ( $offset === false ) {

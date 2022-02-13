@@ -61,6 +61,13 @@ class AhoCorasickTest extends \PHPUnit\Framework\TestCase {
 				'She sells sea shells by the sea shore.',
 				[ 's', 'se', 'sea', 'ore', 'hell', 'eat' ]
 			],
+
+            [
+                'She sells 100 sea shells by the sea shore.',
+                [ 's', 'se', 'sea', 'ore', 'hell', 'eat', '100' ]
+
+            ],
+
 			[
 				'She sells sea shells by the sea shore.',
 				[ 's', 'ls', 'lls', 'hells', 'shell', 'she', 'he', 'h' ],
