@@ -6,5 +6,6 @@ Doxyfile export-ignore
 composer.json export-ignore
 .phpcs.xml export-ignore
 phpunit.xml.dist export-ignore
+bench/ export-ignore
 build/ export-ignore
 tests/ export-ignore
