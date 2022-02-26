@@ -43,7 +43,7 @@ class AhoCorasickTest extends \PHPUnit\Framework\TestCase {
 	 *
 	 * Helps us assert equivalence.
 	 *
-	 * @param &$matches array Results array.
+	 * @param array &$matches Results array.
 	 */
 	public function sortMatcherResults( &$matches ) {
 		// Sort the results by match offset, then by match length,
