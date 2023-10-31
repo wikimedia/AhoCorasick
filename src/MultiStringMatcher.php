@@ -1,16 +1,6 @@
 <?php
 /**
- * AhoCorasick PHP Library
- *
- * A PHP implementation of the Aho-Corasick string matching algorithm.
- *
- * Alfred V. Aho and Margaret J. Corasick, "Efficient string matching:
- *  an aid to bibliographic search", CACM, 18(6):333-340, June 1975.
- *
- * @link http://xlinux.nist.gov/dads//HTML/ahoCorasick.html
- * @link https://en.wikipedia.org/wiki/Aho-Corasick_string_matching_algorithm
- *
- * Copyright (C) 2015 Ori Livneh <ori@wikimedia.org>
+ * Copyright 2015 Ori Livneh <ori@wikimedia.org>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -46,7 +36,7 @@ namespace AhoCorasick;
  * Alfred V. Aho and Margaret J. Corasick, "Efficient string matching:
  *  an aid to bibliographic search", CACM, 18(6):333-340, June 1975.
  *
- * @link http://xlinux.nist.gov/dads//HTML/ahoCorasick.html
+ * @link http://xlinux.nist.gov/dads/HTML/ahoCorasick.html
  */
 class MultiStringMatcher {
 

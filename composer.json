@@ -42,6 +42,7 @@
 			"@phpcs",
 			"minus-x check ."
 		],
+		"changelog": "git log --format='* %s (%aN)' --no-merges --reverse $(git describe --tags --abbrev=0 HEAD)...HEAD | sort | grep -vE '^\\* (build|docs?|tests?):'",
 		"cover": "phpunit --coverage-html coverage",
 		"fix": [
 			"minus-x fix .",

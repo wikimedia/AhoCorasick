@@ -9,7 +9,7 @@ search keywords.
 
 Here is how you use it:
 
-<pre lang="php">
+```php
 use AhoCorasick\MultiStringMatcher;
 
 $keywords = new MultiStringMatcher( array( 'ore', 'hell' ) );
@@ -19,7 +19,7 @@ $keywords->searchIn( 'She sells sea shells by the sea shore.' );
 
 $keywords->searchIn( 'Say hello to more text. MultiStringMatcher objects are reusable!' );
 // Result: array( array( 4, 'hell' ), array( 14, 'ore' ) )
-</pre>
+```
 
 
 Features
@@ -32,12 +32,19 @@ constructed, the machine can locate all occurences of all search keywords in
 any body of text in a single pass, making exactly one state transition per
 input character.
 
+The algorithm originates from ["Efficient string matching: an aid to bibliographic search"][paper] (CACM, Volume 18, Issue 6, June 1975) by Alfred V. Aho and Margaret J. Corasick.
+
+See also the definition and reference implementation on [nist.gov][dads].
+
+
+[paper]: https://doi.org/10.1145/360825.36085
+[dads]: http://xlinux.nist.gov/dads/HTML/ahoCorasick.html
 
 Contribute
 ----------
 
-- Issue tracker: <https://phabricator.wikimedia.org/tag/ahocorasick/>
-- Source code: https://github.com/wikimedia/AhoCorasick
+- Issue tracker: https://phabricator.wikimedia.org/tag/ahocorasick/
+- Source code: https://gerrit.wikimedia.org/g/AhoCorasick
 
 
 Support
