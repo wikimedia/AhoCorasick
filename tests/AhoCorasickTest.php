@@ -55,7 +55,7 @@ class AhoCorasickTest extends \PHPUnit\Framework\TestCase {
 		} );
 	}
 
-	public function matcherCaseProvider() {
+	public static function matcherCaseProvider() {
 		$testCases = [
 			[
 				'She sells sea shells by the sea shore.',
@@ -123,7 +123,7 @@ class AhoCorasickTest extends \PHPUnit\Framework\TestCase {
 		$this->assertEquals( $searchKeywords, $matcher->getKeywords() );
 	}
 
-	public function replacerCaseProvider() {
+	public static function replacerCaseProvider() {
 		return [
 			[
 				'The quick brown fox jumps over the lazy dog.',
