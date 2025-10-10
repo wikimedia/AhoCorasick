@@ -111,8 +111,18 @@ class AhoCorasickTest extends \PHPUnit\Framework\TestCase {
 	 * @covers \AhoCorasick\MultiStringMatcher::__construct
 	 */
 	public function testConstructEmpty() {
-		$this->expectWarning();
-		$matcher = new MultiStringMatcher( [] );
+		try {
+			$warningEmitted = false;
+			set_error_handler( static function () use ( &$warningEmitted ) {
+				$warningEmitted = true;
+			}, E_USER_WARNING );
+
+			new MultiStringMatcher( [] );
+
+			$this->assertTrue( $warningEmitted, 'No PHP warning was emitted.' );
+		} finally {
+			restore_error_handler();
+		}
 	}
 
 	/** @covers \AhoCorasick\MultiStringMatcher::getKeywords */
